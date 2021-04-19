@@ -41,6 +41,7 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
   const [header, setHeader] = useState([]);
   const [stepsGeneration, setStepsGeneration] = useState();
   const [goClicked, setGo] = useState(false);
+  const [timer, setTimer] = useState(0);
   const [hideNumbers, setHideNumbers] = useState(false);
   const running = table.length > 0;
 
@@ -73,6 +74,36 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
   };
 
   const classes = useStyles();
+
+  useEffect(() => {
+    if (timer !== 0) {
+      var checker = !table.length ? header : table[table.length - 1];
+      let temp = [];
+      for (var i = 0; i < nr_cells; i++) {
+        let first;
+        let second;
+        let third;
+        if (i === 0) {
+          first = checker[nr_cells - 1];
+          second = checker[0];
+          third = checker[1];
+        } else if (i === nr_cells - 1) {
+          first = checker[nr_cells - 2];
+          second = checker[nr_cells - 1];
+          third = checker[0];
+        } else {
+          first = checker[i - 1];
+          second = checker[i];
+          third = checker[i + 1];
+        }
+        const convertedValue = lutConverter.find(
+          (el) => el[0] === first && el[1] === second && el[2] === third,
+        );
+        temp.push(convertedValue[3]);
+      }
+      setTable((table) => [...table, temp]);
+    }
+  }, [timer]);
 
   useEffect(() => {
     if (!showTable) {
@@ -146,7 +177,7 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
 
   const clickGo = () => {
     setGo(true);
-    setStepsGeneration(setInterval(() => oneStepGeneration(), 1000));
+    setStepsGeneration(setInterval(() => setTimer((timer) => timer + 1), 500));
   };
 
   const clickStop = () => {
@@ -196,7 +227,11 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
           </Button>
         </S.ButtonContainer>
         <S.ButtonContainer>
-          <Button onClick={oneStepGeneration} variant="contained">
+          <Button
+            onClick={oneStepGeneration}
+            variant="contained"
+            disabled={goClicked}
+          >
             One Step
           </Button>
         </S.ButtonContainer>

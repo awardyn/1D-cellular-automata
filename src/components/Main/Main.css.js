@@ -6,13 +6,16 @@ export const Container = styled.div`
 
 export const SelectsContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 300px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const SelectContainer = styled.div`
   margin: 1rem;
+  margin-top: ${({ marginTop }) => marginTop};
   margin-left: 0rem;
-  width: 120px;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
 `;
