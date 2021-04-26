@@ -24,10 +24,11 @@ export const ColorsContainer = styled.div`
   background-color: ${({ backgroundColor }) => backgroundColor};
   user-select: none;
   text-align: center;
+  cursor: pointer;
   width: 50px;
   height: 50px;
   border-bottom: 0px;
-  border: 1px solid rgba(224, 224, 224, 1);
+  border: ${({ border }) => `2px solid ${border}`};
   border-radius: 10px;
   display: flex;
   justify-content: center;

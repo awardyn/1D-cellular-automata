@@ -89,6 +89,24 @@ const Main = () => {
             value={state}
           />
         </S.SelectContainer>
+
+        <S.SelectContainer>
+          <Typography variant="h6">Number of cells(3-30)</Typography>
+          <NumberFormat
+            name="cells"
+            value={cells}
+            onValueChange={handleCellsChange}
+            variant="outlined"
+            style={{ textTransform: 'capitalize', width: '100%' }}
+            size="small"
+            margin="dense"
+            fullWidth
+            autoComplete="off"
+            customInput={TextField}
+            allowNegative={false}
+            decimalScale={0}
+          />
+        </S.SelectContainer>
         <S.SelectContainer marginTop="2.5rem">
           <Typography variant="h6">LUT</Typography>
           <NumberFormat
@@ -112,24 +130,10 @@ const Main = () => {
             allowLeadingZeros={true}
           />
         </S.SelectContainer>
-        <S.SelectContainer>
-          <Typography variant="h6">Number of cells(3-30)</Typography>
-          <NumberFormat
-            name="cells"
-            value={cells}
-            onValueChange={handleCellsChange}
-            variant="outlined"
-            style={{ textTransform: 'capitalize', width: '100%' }}
-            size="small"
-            margin="dense"
-            fullWidth
-            autoComplete="off"
-            customInput={TextField}
-            allowNegative={false}
-            decimalScale={0}
-          />
-        </S.SelectContainer>
       </S.SelectsContainer>
+      <Button onClick={onSubmit} variant="contained">
+        Submit
+      </Button>
       <Tooltip
         title={
           <h3 style={{ textAlign: 'center' }}>
@@ -141,15 +145,12 @@ const Main = () => {
           <Button
             onClick={randomLUT}
             variant="contained"
-            style={{ marginRight: '1rem' }}
+            style={{ marginLeft: '1rem' }}
           >
             Random Lut
           </Button>
         </span>
       </Tooltip>
-      <Button onClick={onSubmit} variant="contained">
-        Submit
-      </Button>
       {showTable ? (
         <GollyTable
           lut={lutToUse}
