@@ -17,6 +17,7 @@ import {
 import * as S from './GollyTable.css';
 import NumberFormat from 'react-number-format';
 import Pdf from 'react-to-pdf';
+import { PhotoshopPicker } from 'react-color';
 
 const stateOptions = [
   { value: 2, label: '2' },
@@ -27,19 +28,33 @@ const stateOptions = [
   { value: 7, label: '7' },
 ];
 
-const colors = [
-  'blueViolet',
-  'aqua',
-  'chartreuse',
-  'coral',
-  'darkGrey',
-  'fuchsia',
-  'red',
-];
-
 const ref = createRef();
 
+const popover = {
+  position: 'absolute',
+  zIndex: '2',
+};
+const cover = {
+  position: 'fixed',
+  top: '0px',
+  right: '0px',
+  bottom: '0px',
+  left: '0px',
+};
+
 const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
+  const [colors, setColors] = useState([
+    'blueViolet',
+    'aqua',
+    'chartreuse',
+    'coral',
+    'darkGrey',
+    'fuchsia',
+    'red',
+  ]);
+  const [colorChanging, setColorChanging] = useState('');
+  const [colorChangingIndex, setColorChangingIndex] = useState(-1);
+  const [colorUpdating, setColorUpdating] = useState(false);
   const [settingColor, setColor] = useState('blueViolet');
   const [lutConverter, setLutConverter] = useState([]);
   const [table, setTable] = useState([]);
@@ -48,6 +63,7 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
   const [goClicked, setGo] = useState(false);
   const [timer, setTimer] = useState(0);
   const [hideNumbers, setHideNumbers] = useState(false);
+  const [showColorPicker, setShowColorPicker] = useState(false);
   const running = table.length > 0;
 
   const useStyles = makeStyles({
@@ -227,6 +243,23 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
     setColor(color);
   };
 
+  const updateColor = (color, event) => {
+    setColor(color.hex);
+    setColorChanging(color.hex);
+  };
+
+  const handleClose = () => {
+    setShowColorPicker(false);
+    setColors((colors) =>
+      colors.map((col, idx) => {
+        if (idx === colorChangingIndex) {
+          return colorChanging;
+        }
+        return col;
+      }),
+    );
+  };
+
   return (
     <S.Container>
       <S.ButtonsContainer>
@@ -235,17 +268,46 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
             idx < nr_states && (
               <S.ColorsContainer
                 border={
-                  settingColor === color ? '#000' : 'rgba(224, 224, 224, 1)'
+                  settingColor === color && !colorUpdating
+                    ? '#000'
+                    : 'rgba(224, 224, 224, 1)'
                 }
                 backgroundColor={color}
                 key={`color-${idx}`}
-                onClick={() => changeColor(color)}
+                onClick={() => {
+                  if (colorUpdating) {
+                    setColorChanging(color);
+                    setColorChangingIndex(idx);
+                    setShowColorPicker((showColorPicker) => !showColorPicker);
+                  } else {
+                    changeColor(color);
+                  }
+                }}
               >
                 {idx}
               </S.ColorsContainer>
             ),
         )}
+
+        <S.ButtonContainer>
+          <Button
+            onClick={() => setColorUpdating((colorUpdating) => !colorUpdating)}
+            disabled={goClicked || showColorPicker}
+            variant="contained"
+            style={{ width: '156px' }}
+          >
+            {colorUpdating ? 'Save colors' : 'Update colors'}
+          </Button>
+        </S.ButtonContainer>
       </S.ButtonsContainer>
+
+      {showColorPicker ? (
+        <div style={popover}>
+          <div style={cover} onClick={handleClose} />
+          <PhotoshopPicker color={colorChanging} onChange={updateColor} />
+        </div>
+      ) : null}
+
       <S.ButtonsContainer>
         <Tooltip
           title={
@@ -261,24 +323,22 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
           <span>
             <Pdf targetRef={ref} filename="cellular-automata-1D.pdf">
               {({ toPdf }) => (
-                <Button
-                  disabled={goClicked || !(nr_cells === '16')}
-                  onClick={toPdf}
-                  variant="outlined"
-                >
-                  Generate Pdf
-                </Button>
+                <S.ButtonContainer>
+                  <Button
+                    disabled={goClicked || !(nr_cells === '16')}
+                    onClick={toPdf}
+                    variant="outlined"
+                  >
+                    Generate Pdf
+                  </Button>
+                </S.ButtonContainer>
               )}
             </Pdf>
           </span>
         </Tooltip>
 
         <S.ButtonContainer>
-          <Button
-            onClick={reset}
-            disabled={!running || goClicked}
-            variant="contained"
-          >
+          <Button onClick={reset} disabled={goClicked} variant="contained">
             Reset
           </Button>
         </S.ButtonContainer>
