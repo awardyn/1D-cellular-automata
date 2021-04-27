@@ -73,7 +73,7 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
   });
 
   const onCellClick = (idx) => {
-    if (!running) {
+    if (!running && !colorUpdating) {
       setHeader((header) =>
         header.map((el, index) => {
           if (idx === index) {
@@ -325,7 +325,9 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
               {({ toPdf }) => (
                 <S.ButtonContainer>
                   <Button
-                    disabled={goClicked || !(nr_cells === '16')}
+                    disabled={
+                      colorUpdating || goClicked || !(nr_cells === '16')
+                    }
                     onClick={toPdf}
                     variant="outlined"
                   >
@@ -338,21 +340,29 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
         </Tooltip>
 
         <S.ButtonContainer>
-          <Button onClick={reset} disabled={goClicked} variant="contained">
+          <Button
+            onClick={reset}
+            disabled={colorUpdating || goClicked}
+            variant="contained"
+          >
             Reset
           </Button>
         </S.ButtonContainer>
         <S.ButtonContainer>
           <Button
             onClick={() => setHideNumbers((hideNumbers) => !hideNumbers)}
-            disabled={goClicked}
+            disabled={colorUpdating || goClicked}
             variant="contained"
           >
             {hideNumbers ? 'Show Numbers' : 'Hide Numbers'}
           </Button>
         </S.ButtonContainer>
         <S.ButtonContainer>
-          <Button onClick={randomHeader} disabled={running} variant="contained">
+          <Button
+            onClick={randomHeader}
+            disabled={colorUpdating || running}
+            variant="contained"
+          >
             Random Configuration
           </Button>
         </S.ButtonContainer>
@@ -361,14 +371,18 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
         <S.ButtonContainer>
           <Button
             onClick={() => setTable([])}
-            disabled={!running || goClicked}
+            disabled={colorUpdating || !running || goClicked}
             variant="contained"
           >
             Clear
           </Button>
         </S.ButtonContainer>
         <S.ButtonContainer>
-          <Button variant="contained" onClick={clickStop} disabled={!goClicked}>
+          <Button
+            variant="contained"
+            onClick={clickStop}
+            disabled={colorUpdating || !goClicked}
+          >
             Stop
           </Button>
         </S.ButtonContainer>
@@ -376,20 +390,24 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
           <Button
             onClick={oneStepGeneration}
             variant="contained"
-            disabled={goClicked}
+            disabled={colorUpdating || goClicked}
           >
             One Step
           </Button>
         </S.ButtonContainer>
         <S.ButtonContainer>
-          <Button variant="contained" onClick={clickGo} disabled={goClicked}>
+          <Button
+            variant="contained"
+            onClick={clickGo}
+            disabled={colorUpdating || goClicked}
+          >
             Go
           </Button>
         </S.ButtonContainer>
         <S.ButtonContainer>
           <Button
             onClick={generateFirstTwenty}
-            disabled={table.length > 0}
+            disabled={colorUpdating || table.length > 0}
             variant="contained"
           >
             Generate first 21
