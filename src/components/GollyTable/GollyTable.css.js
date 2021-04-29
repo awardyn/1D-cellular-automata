@@ -8,12 +8,20 @@ export const Container = styled.div`
   align-items: center;
 `;
 
+export const BorderContainer = styled.div`
+  border: 1px solid black;
+  border-radius: 16px;
+  width: 72.5%;
+  margin-bottom: 1rem;
+`;
+
 export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 `;
 
 export const ButtonContainer = styled.div`

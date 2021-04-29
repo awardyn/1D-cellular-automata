@@ -262,158 +262,164 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
 
   return (
     <S.Container>
-      <S.ButtonsContainer>
-        {colors.map(
-          (color, idx) =>
-            idx < nr_states && (
-              <S.ColorsContainer
-                border={
-                  settingColor === color && !colorUpdating
-                    ? '#000'
-                    : 'rgba(224, 224, 224, 1)'
-                }
-                backgroundColor={color}
-                key={`color-${idx}`}
-                onClick={() => {
-                  if (colorUpdating) {
-                    setColorChanging(color);
-                    setColorChangingIndex(idx);
-                    setShowColorPicker((showColorPicker) => !showColorPicker);
-                  } else {
-                    changeColor(color);
+      <S.BorderContainer>
+        <S.ButtonsContainer>
+          {colors.map(
+            (color, idx) =>
+              idx < nr_states && (
+                <S.ColorsContainer
+                  border={
+                    settingColor === color && !colorUpdating
+                      ? '#000'
+                      : 'rgba(224, 224, 224, 1)'
                   }
-                }}
-              >
-                {idx}
-              </S.ColorsContainer>
-            ),
-        )}
+                  backgroundColor={color}
+                  key={`color-${idx}`}
+                  onClick={() => {
+                    if (colorUpdating) {
+                      setColorChanging(color);
+                      setColorChangingIndex(idx);
+                      setShowColorPicker((showColorPicker) => !showColorPicker);
+                    } else {
+                      changeColor(color);
+                    }
+                  }}
+                >
+                  {idx}
+                </S.ColorsContainer>
+              ),
+          )}
 
-        <S.ButtonContainer>
-          <Button
-            onClick={() => setColorUpdating((colorUpdating) => !colorUpdating)}
-            disabled={goClicked || showColorPicker}
-            variant="contained"
-            style={{ width: '156px' }}
-          >
-            {colorUpdating ? 'Save colors' : 'Update colors'}
-          </Button>
-        </S.ButtonContainer>
-      </S.ButtonsContainer>
-
+          <S.ButtonContainer>
+            <Button
+              onClick={() =>
+                setColorUpdating((colorUpdating) => !colorUpdating)
+              }
+              disabled={goClicked || showColorPicker}
+              variant="contained"
+              style={{ width: '156px' }}
+            >
+              {colorUpdating ? 'Save colors' : 'Update colors'}
+            </Button>
+          </S.ButtonContainer>
+        </S.ButtonsContainer>
+      </S.BorderContainer>
       {showColorPicker ? (
         <div style={popover}>
           <div style={cover} onClick={handleClose} />
           <PhotoshopPicker color={colorChanging} onChange={updateColor} />
         </div>
       ) : null}
+      <S.BorderContainer>
+        <S.ButtonsContainer>
+          <Tooltip
+            title={
+              nr_cells === '16' ? (
+                ''
+              ) : (
+                <h3 style={{ textAlign: 'center' }}>
+                  Only available when number of cells equal 16
+                </h3>
+              )
+            }
+          >
+            <span>
+              <Pdf targetRef={ref} filename="cellular-automata-1D.pdf">
+                {({ toPdf }) => (
+                  <S.ButtonContainer>
+                    <Button
+                      disabled={
+                        colorUpdating || goClicked || !(nr_cells === '16')
+                      }
+                      onClick={toPdf}
+                      variant="outlined"
+                    >
+                      Generate Pdf
+                    </Button>
+                  </S.ButtonContainer>
+                )}
+              </Pdf>
+            </span>
+          </Tooltip>
 
-      <S.ButtonsContainer>
-        <Tooltip
-          title={
-            nr_cells === '16' ? (
-              ''
-            ) : (
-              <h3 style={{ textAlign: 'center' }}>
-                Only available when number of cells equal 16
-              </h3>
-            )
-          }
-        >
-          <span>
-            <Pdf targetRef={ref} filename="cellular-automata-1D.pdf">
-              {({ toPdf }) => (
-                <S.ButtonContainer>
-                  <Button
-                    disabled={
-                      colorUpdating || goClicked || !(nr_cells === '16')
-                    }
-                    onClick={toPdf}
-                    variant="outlined"
-                  >
-                    Generate Pdf
-                  </Button>
-                </S.ButtonContainer>
-              )}
-            </Pdf>
-          </span>
-        </Tooltip>
-
-        <S.ButtonContainer>
-          <Button
-            onClick={reset}
-            disabled={colorUpdating || goClicked}
-            variant="contained"
-          >
-            Reset
-          </Button>
-        </S.ButtonContainer>
-        <S.ButtonContainer>
-          <Button
-            onClick={() => setHideNumbers((hideNumbers) => !hideNumbers)}
-            disabled={colorUpdating || goClicked}
-            variant="contained"
-          >
-            {hideNumbers ? 'Show Numbers' : 'Hide Numbers'}
-          </Button>
-        </S.ButtonContainer>
-        <S.ButtonContainer>
-          <Button
-            onClick={randomHeader}
-            disabled={colorUpdating || running}
-            variant="contained"
-          >
-            Random Configuration
-          </Button>
-        </S.ButtonContainer>
-      </S.ButtonsContainer>
-      <S.ButtonsContainer>
-        <S.ButtonContainer>
-          <Button
-            onClick={() => setTable([])}
-            disabled={colorUpdating || !running || goClicked}
-            variant="contained"
-          >
-            Clear
-          </Button>
-        </S.ButtonContainer>
-        <S.ButtonContainer>
-          <Button
-            variant="contained"
-            onClick={clickStop}
-            disabled={colorUpdating || !goClicked}
-          >
-            Stop
-          </Button>
-        </S.ButtonContainer>
-        <S.ButtonContainer>
-          <Button
-            onClick={oneStepGeneration}
-            variant="contained"
-            disabled={colorUpdating || goClicked}
-          >
-            One Step
-          </Button>
-        </S.ButtonContainer>
-        <S.ButtonContainer>
-          <Button
-            variant="contained"
-            onClick={clickGo}
-            disabled={colorUpdating || goClicked}
-          >
-            Go
-          </Button>
-        </S.ButtonContainer>
-        <S.ButtonContainer>
-          <Button
-            onClick={generateFirstTwenty}
-            disabled={colorUpdating || table.length > 0}
-            variant="contained"
-          >
-            Generate first 21
-          </Button>
-        </S.ButtonContainer>
-      </S.ButtonsContainer>
+          <S.ButtonContainer>
+            <Button
+              onClick={reset}
+              disabled={colorUpdating || goClicked}
+              variant="contained"
+            >
+              Reset
+            </Button>
+          </S.ButtonContainer>
+          <S.ButtonContainer>
+            <Button
+              onClick={() => setHideNumbers((hideNumbers) => !hideNumbers)}
+              disabled={colorUpdating || goClicked}
+              variant="contained"
+            >
+              {hideNumbers ? 'Show Numbers' : 'Hide Numbers'}
+            </Button>
+          </S.ButtonContainer>
+          <S.ButtonContainer>
+            <Button
+              onClick={randomHeader}
+              disabled={colorUpdating || running}
+              variant="contained"
+            >
+              Random Configuration
+            </Button>
+          </S.ButtonContainer>
+        </S.ButtonsContainer>
+      </S.BorderContainer>
+      <S.BorderContainer>
+        <S.ButtonsContainer>
+          <S.ButtonContainer>
+            <Button
+              onClick={() => setTable([])}
+              disabled={colorUpdating || !running || goClicked}
+              variant="contained"
+            >
+              Clear
+            </Button>
+          </S.ButtonContainer>
+          <S.ButtonContainer>
+            <Button
+              variant="contained"
+              onClick={clickStop}
+              disabled={colorUpdating || !goClicked}
+            >
+              Stop
+            </Button>
+          </S.ButtonContainer>
+          <S.ButtonContainer>
+            <Button
+              onClick={oneStepGeneration}
+              variant="contained"
+              disabled={colorUpdating || goClicked}
+            >
+              One Step
+            </Button>
+          </S.ButtonContainer>
+          <S.ButtonContainer>
+            <Button
+              variant="contained"
+              onClick={clickGo}
+              disabled={colorUpdating || goClicked}
+            >
+              Go
+            </Button>
+          </S.ButtonContainer>
+          <S.ButtonContainer>
+            <Button
+              onClick={generateFirstTwenty}
+              disabled={colorUpdating || table.length > 0}
+              variant="contained"
+            >
+              Generate first 21
+            </Button>
+          </S.ButtonContainer>
+        </S.ButtonsContainer>
+      </S.BorderContainer>
       <TableContainer className={classes.table} component={Paper}>
         <Table
           className={classes.table}

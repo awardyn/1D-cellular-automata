@@ -77,80 +77,82 @@ const Main = () => {
 
   return (
     <S.Container>
-      <S.SelectsContainer>
-        <S.SelectContainer>
-          <Typography variant="h6">Number of states</Typography>
+      <S.TopContainer>
+        <S.SelectsContainer>
+          <S.SelectContainer>
+            <Typography variant="h6">Number of states</Typography>
 
-          <Select
-            name="states"
-            placeholder="States"
-            options={stateOptions}
-            onChange={handleStateChange}
-            value={state}
-          />
-        </S.SelectContainer>
+            <Select
+              name="states"
+              placeholder="States"
+              options={stateOptions}
+              onChange={handleStateChange}
+              value={state}
+            />
+          </S.SelectContainer>
 
-        <S.SelectContainer>
-          <Typography variant="h6">Number of cells(3-30)</Typography>
-          <NumberFormat
-            name="cells"
-            value={cells}
-            onValueChange={handleCellsChange}
-            variant="outlined"
-            style={{ textTransform: 'capitalize', width: '100%' }}
-            size="small"
-            margin="dense"
-            fullWidth
-            autoComplete="off"
-            customInput={TextField}
-            allowNegative={false}
-            decimalScale={0}
-          />
-        </S.SelectContainer>
-        <S.SelectContainer marginTop="2.5rem">
-          <Typography variant="h6">LUT</Typography>
-          <NumberFormat
-            name="lut"
-            value={lut}
-            onValueChange={handleLutChange}
-            onBlur={() =>
-              showTable &&
-              toast.info('Remember to click Submit button to apply changes')
+          <S.SelectContainer>
+            <Typography variant="h6">Number of cells(3-30)</Typography>
+            <NumberFormat
+              name="cells"
+              value={cells}
+              onValueChange={handleCellsChange}
+              variant="outlined"
+              style={{ textTransform: 'capitalize', width: '100%' }}
+              size="small"
+              margin="dense"
+              fullWidth
+              autoComplete="off"
+              customInput={TextField}
+              allowNegative={false}
+              decimalScale={0}
+            />
+          </S.SelectContainer>
+          <S.SelectContainer marginTop="2.5rem">
+            <Typography variant="h6">LUT</Typography>
+            <NumberFormat
+              name="lut"
+              value={lut}
+              onValueChange={handleLutChange}
+              onBlur={() =>
+                showTable &&
+                toast.info('Remember to click Submit button to apply changes')
+              }
+              variant="outlined"
+              style={{ textTransform: 'capitalize', width: '100%' }}
+              size="small"
+              margin="dense"
+              fullWidth
+              helperText={`${lut.length}/${lutLength}`}
+              autoComplete="off"
+              customInput={TextField}
+              allowNegative={false}
+              decimalScale={0}
+              allowLeadingZeros={true}
+            />
+          </S.SelectContainer>
+          <Tooltip
+            title={
+              <h3 style={{ textAlign: 'center' }}>
+                You don't have to click submit after creating random LUT
+              </h3>
             }
-            variant="outlined"
-            style={{ textTransform: 'capitalize', width: '100%' }}
-            size="small"
-            margin="dense"
-            fullWidth
-            helperText={`${lut.length}/${lutLength}`}
-            autoComplete="off"
-            customInput={TextField}
-            allowNegative={false}
-            decimalScale={0}
-            allowLeadingZeros={true}
-          />
-        </S.SelectContainer>
-      </S.SelectsContainer>
-      <Button onClick={onSubmit} variant="contained">
-        Submit
-      </Button>
-      <Tooltip
-        title={
-          <h3 style={{ textAlign: 'center' }}>
-            You don't have to click submit after creating random LUT
-          </h3>
-        }
-      >
-        <span>
-          <Button
-            onClick={randomLUT}
-            variant="contained"
-            style={{ marginLeft: '1rem' }}
           >
-            Random Lut
-          </Button>
-        </span>
-      </Tooltip>
+            <span>
+              <Button
+                onClick={randomLUT}
+                variant="contained"
+                style={{ marginLeft: '1rem', marginTop: '2rem' }}
+              >
+                Random Lut
+              </Button>
+            </span>
+          </Tooltip>
+        </S.SelectsContainer>
+        <Button onClick={onSubmit} variant="contained">
+          Submit
+        </Button>
+      </S.TopContainer>
       {showTable ? (
         <GollyTable
           lut={lutToUse}
