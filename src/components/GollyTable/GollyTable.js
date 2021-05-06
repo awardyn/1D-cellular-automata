@@ -19,15 +19,6 @@ import NumberFormat from 'react-number-format';
 import Pdf from 'react-to-pdf';
 import { PhotoshopPicker } from 'react-color';
 
-const stateOptions = [
-  { value: 2, label: '2' },
-  { value: 3, label: '3' },
-  { value: 4, label: '4' },
-  { value: 5, label: '5' },
-  { value: 6, label: '6' },
-  { value: 7, label: '7' },
-];
-
 const ref = createRef();
 
 const popover = {
@@ -51,6 +42,7 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
     'darkGrey',
     'fuchsia',
     'red',
+    'green',
   ]);
   const [colorChanging, setColorChanging] = useState('');
   const [colorChangingIndex, setColorChangingIndex] = useState(-1);
@@ -83,6 +75,28 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
         }),
       );
     }
+  };
+
+  const generateTableToLatex = () => {
+    //TODO finish it
+    let tex = '  ';
+    const begin =
+      '\\RequirePackage{amsmath}\n\\documentclass[a4paper,11pt]{article}\n' +
+      '\\usepackage[table]{xcolor}\n\\usepackage{color}\\usepackage{xstring}\n\\usepackage{graphicx}\n\n' +
+      '\\begin{document}\n\n' +
+      '\\\newcommand{cC}[1]{%\n' +
+      '    \\IfEqCase{#1}{%\n';
+
+    const firstLine = header.map((el) => `\\cC{${el}}`).join(' & ');
+    tex += firstLine + '\\\\\n';
+    tex += '\\hline\n';
+    for (var i = 0; i < table.length; i++) {
+      const line = table[i].map((el) => `\\cC{${el}}`).join(' & ');
+      tex += '  ' + line + '\\\\\n';
+      tex += '\\hline\n';
+    }
+    const dataURI = 'data:text/plain;base64,' + encodeBase64(tex);
+    saveAs(dataURI, 'lut6-to-latex.txt');
   };
 
   const reset = () => {
