@@ -17,7 +17,7 @@ import {
 import * as S from './GollyTable.css';
 import NumberFormat from 'react-number-format';
 import Pdf from 'react-to-pdf';
-import { PhotoshopPicker } from 'react-color';
+import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
 
 const ref = createRef();
 
@@ -80,13 +80,31 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
   const generateTableToLatex = () => {
     //TODO finish it
     let tex = '  ';
+    let cells = '{' + '|c'.repeat(nr_cells) + '|}\n';
+
     const begin =
       '\\RequirePackage{amsmath}\n\\documentclass[a4paper,11pt]{article}\n' +
       '\\usepackage[table]{xcolor}\n\\usepackage{color}\\usepackage{xstring}\n\\usepackage{graphicx}\n\n' +
       '\\begin{document}\n\n' +
-      '\\\newcommand{cC}[1]{%\n' +
-      '    \\IfEqCase{#1}{%\n';
-
+      '\\newcommand{\\cC}[1]{%\n' +
+      '    \\IfEqCase{#1}{%\n' +
+      '      {0}{\\cellcolor[RGB]{255,255,255}{}}\n' +
+      '      {1}{\\cellcolor[RGB]{221,221,221}{}}\n' +
+      '      {2}{\\cellcolor[RGB]{170,170,170}{}}\n' +
+      '      {3}{\\cellcolor[RGB]{119,119,119}{}}\n' +
+      '      {4}{\\cellcolor[RGB]{85,85,85}{}}\n' +
+      '      {5}{\\cellcolor[RGB]{51,51,51}{}}\n' +
+      '      {6}{\\cellcolor[RGB]{27,27,27}{}}\n' +
+      '      {7}{\\cellcolor[RGB]{0,0,0}{}}\n' +
+      '   }\n' +
+      '}\n\n' +
+      '\\begin{table}[ht]\n' +
+      '\\centering\n' +
+      '\\def\\arraystretch{1}\n' +
+      '\\scalebox{1}{\n' +
+      '\\begin{tabular}' +
+      cells;
+    tex += begin;
     const firstLine = header.map((el) => `\\cC{${el}}`).join(' & ');
     tex += firstLine + '\\\\\n';
     tex += '\\hline\n';
@@ -95,6 +113,14 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
       tex += '  ' + line + '\\\\\n';
       tex += '\\hline\n';
     }
+    const end =
+      '\\end{tabular}\n' +
+      '}\n' +
+      '\\caption{Caption of table}\n' +
+      '   \\label{tab:my_label}\n' +
+      '\\end{table}\n' +
+      '\\end{document}\n';
+    tex += end;
     const dataURI = 'data:text/plain;base64,' + encodeBase64(tex);
     saveAs(dataURI, 'lut6-to-latex.txt');
   };
@@ -326,35 +352,15 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
       ) : null}
       <S.BorderContainer>
         <S.ButtonsContainer>
-          <Tooltip
-            title={
-              nr_cells === '16' ? (
-                ''
-              ) : (
-                <h3 style={{ textAlign: 'center' }}>
-                  Only available when number of cells equal 16
-                </h3>
-              )
-            }
-          >
-            <span>
-              <Pdf targetRef={ref} filename="cellular-automata-1D.pdf">
-                {({ toPdf }) => (
-                  <S.ButtonContainer>
-                    <Button
-                      disabled={
-                        colorUpdating || goClicked || !(nr_cells === '16')
-                      }
-                      onClick={toPdf}
-                      variant="outlined"
-                    >
-                      Generate Pdf
-                    </Button>
-                  </S.ButtonContainer>
-                )}
-              </Pdf>
-            </span>
-          </Tooltip>
+          <S.ButtonContainer>
+            <Button
+              disabled={colorUpdating || goClicked}
+              onClick={generateTableToLatex}
+              variant="outlined"
+            >
+              Generate Latex
+            </Button>
+          </S.ButtonContainer>
 
           <S.ButtonContainer>
             <Button
