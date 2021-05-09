@@ -1,70 +1,44 @@
-# Getting Started with Create React App
+# Application used to display 1D cellular automata with given LUT (look up table)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Instruction how to use it
 
-## Available Scripts
+### Preparation
 
-In the project directory, you can run:
+1. Set number of states in `Number of states` select.
+2. Set number of columnns in `Number of cells(3-30)` input.
+3. Provide LUT which you want to display in `LUT` input.
+   Optionally: You can specify LUT by using `RANDOM LUT` button.
+4. Click `SUBMIT` button to apply settings
 
-### `yarn start`
+### Configuration
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. To setup configuration you can use buttons in colors section:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Choose state you want to use by clicking it
+- Click every cell where you want to set this state
 
-### `yarn test`
+Optionally: You can use `RANDOM CONFIGUARION` button which will create configuration randomly.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. You can also setup colors of each state by using `UPDATE COLORS` button:
 
-### `yarn build`
+- Click button (You are now in colors updating state)
+- Click button of state which color you want to update
+- Choose your color in color's picker
+- Click `SAVE COLORS` button
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Display
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Buttons:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `RESET` - Reset whole configuration and row's to "0" state
+- `HIDE NUMBERS` - Hide numbers from table
+- `CLEAR` - Clear displayed rows but leave configuration untouched
+- `GO` - Display new row every 0.5 seconds
+- `STOP` - Stop `GO`
+- `ONE STEP`- Generate new row
+- `GENERATE FIRST 20` - Generate first new 19 rows (first is already generated)
+- `GENERATE LATEX` - Generate LATEX code to `.txt` file with displayed table in black and white colors
 
-### `yarn eject`
+Fell free to use it :)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Aleksander Wardyn

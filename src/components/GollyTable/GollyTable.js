@@ -211,7 +211,7 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
 
   const generateFirstTwenty = () => {
     let temp20 = [];
-    for (let j = 21; j--; ) {
+    for (let j = 19; j--; ) {
       var checker = !temp20.length ? header : temp20[temp20.length - 1];
       let temp = [];
       for (var i = 0; i < nr_cells; i++) {
@@ -435,7 +435,7 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
               disabled={colorUpdating || table.length > 0}
               variant="contained"
             >
-              Generate first 21
+              Generate first 20
             </Button>
           </S.ButtonContainer>
         </S.ButtonsContainer>
