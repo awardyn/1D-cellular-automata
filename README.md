@@ -1,4 +1,4 @@
-# Application used to display 1D cellular automata with given LUT (look up table)
+# Application dedicated to display 1D cellular automata with given LUT (look up table)
 
 ## Instruction how to use it
 
