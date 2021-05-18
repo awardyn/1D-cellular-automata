@@ -16,8 +16,8 @@ import {
 } from '@material-ui/core';
 import * as S from './GollyTable.css';
 import NumberFormat from 'react-number-format';
-import Pdf from 'react-to-pdf';
 import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
+import { PhotoshopPicker } from 'react-color';
 
 const ref = createRef();
 

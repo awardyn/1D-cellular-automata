@@ -14,7 +14,6 @@
     "react-number-format": "^4.5.3",
     "react-scripts": "4.0.3",
     "react-select": "^4.3.0",
-    "react-to-pdf": "^0.0.13",
     "react-toastify": "^7.0.3",
     "styled-components": "^5.2.3"
   },
