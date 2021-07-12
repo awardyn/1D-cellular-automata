@@ -88,14 +88,14 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
       '\\begin{document}\n\n' +
       '\\newcommand{\\cC}[1]{%\n' +
       '    \\IfEqCase{#1}{%\n' +
-      '      {0}{\\cellcolor[RGB]{255,255,255}{}}\n' +
-      '      {1}{\\cellcolor[RGB]{221,221,221}{}}\n' +
-      '      {2}{\\cellcolor[RGB]{170,170,170}{}}\n' +
-      '      {3}{\\cellcolor[RGB]{119,119,119}{}}\n' +
-      '      {4}{\\cellcolor[RGB]{85,85,85}{}}\n' +
-      '      {5}{\\cellcolor[RGB]{51,51,51}{}}\n' +
-      '      {6}{\\cellcolor[RGB]{27,27,27}{}}\n' +
-      '      {7}{\\cellcolor[RGB]{0,0,0}{}}\n' +
+      `      {0}{\\cellcolor[RGB]{255,255,255}{${hideNumbers ? '' : 0}}}\n` +
+      `      {1}{\\cellcolor[RGB]{221,221,221}{${hideNumbers ? '' : 1}}}\n` +
+      `      {2}{\\cellcolor[RGB]{170,170,170}{${hideNumbers ? '' : 2}}}\n` +
+      `      {3}{\\cellcolor[RGB]{119,119,119}{${hideNumbers ? '' : 3}}}\n` +
+      `      {4}{\\cellcolor[RGB]{85,85,85}{${hideNumbers ? '' : 4}}}\n` +
+      `      {5}{\\cellcolor[RGB]{51,51,51}{${hideNumbers ? '' : 5}}}\n` +
+      `      {6}{\\cellcolor[RGB]{27,27,27}{${hideNumbers ? '' : 6}}}\n` +
+      `      {7}{\\cellcolor[RGB]{0,0,0}{${hideNumbers ? '' : 7}}}\n` +
       '   }\n' +
       '}\n\n' +
       '\\begin{table}[ht]\n' +
@@ -103,7 +103,8 @@ const GollyTable = ({ lut, nr_states, nr_cells, showTable }) => {
       '\\def\\arraystretch{1}\n' +
       '\\scalebox{1}{\n' +
       '\\begin{tabular}' +
-      cells;
+      cells +
+      '\\hline\n';
     tex += begin;
     const firstLine = header.map((el) => `\\cC{${el}}`).join(' & ');
     tex += firstLine + '\\\\\n';
